@@ -6,7 +6,13 @@ import json
 from tools.HttpUtil import HttpUtil
 
 class apiCommon():
-    def get_response(self, testId):
+    def get_response(self, testId, isCheckSucces=True):
+        '''
+        获取接口返回结果，然后取出其中的data并返回；
+        获取testid的数据库数据，然后去除其中data并返回
+        :param testId:
+        :return:
+        '''
         ret = mysql().getOrderUpdatedAt(testId)
         testPath = ret[0].get('testPath')
         interface = ret[0].get('interface')
@@ -27,7 +33,61 @@ class apiCommon():
             response = '请检查下method字段:  ' + method
             pass
 
-        self.check_common(response)
+        if isCheckSucces == True:
+            self.check_common(response, isCheckSucces)
+        elif isCheckSucces == False:
+            self.check_common(response, isCheckSucces)
+        else:
+            INFO('isCheckSucces  传值异常')
+
+        paramdict = {}
+        paramdict['resData'] = response.get('data')
+        paramdict['testData'] = testResp.get('data')
+        paramdict['check_point_list'] = check_point_list
+        return paramdict
+
+    def getResponse(self,testId):
+        '''
+        获取接口返回的数据，并直接返回response
+        :return:
+        '''
+        ret = mysql().getOrderUpdatedAt(testId)
+        testPath = ret[0].get('testPath')
+        interface = ret[0].get('interface')
+        testParams = ret[0].get('testParams')
+        method = ret[0].get('method')
+        url = testPath + interface
+        if method == 'get':
+            url = url + '?' + testParams
+            response = HttpUtil().get_request(url=url, headers=Global.Headers_yun)
+        elif method == 'post':
+            testParams = testParams.encode()
+            response = HttpUtil().post_request(url=url,postdata=testParams, headers=Global.Headers_yun)
+        else:
+            response = '请检查下method字段:  ' + method
+            pass
+        return response
+
+    def get_resData(self,testId):
+        ret = mysql().getOrderUpdatedAt(testId)
+        testPath = ret[0].get('testPath')
+        interface = ret[0].get('interface')
+        testParams = ret[0].get('testParams')
+        method = ret[0].get('method')
+        testResp = ret[0].get('testResp')
+        check_point_list = ret[0].get('check_point')
+        url = testPath + interface
+        testResp = json.loads(testResp)
+
+        if method == 'get':
+            url = url + '?' + testParams
+            response = HttpUtil().get_request(url=url, headers=Global.Headers_yun)
+        elif method == 'post':
+            testParams = testParams.encode()
+            response = HttpUtil().post_request(url=url, postdata=testParams, headers=Global.Headers_yun)
+        else:
+            response = '请检查下method字段:  ' + method
+            pass
 
         paramdict = {}
         paramdict['resData'] = response.get('data')
@@ -36,18 +96,30 @@ class apiCommon():
         return paramdict
 
 
-    def check_common(self,response):
+    def check_common(self,response,isCheckSucces=True):
         success = response.get('success')
-        if success != True:
-            INFO(response)
-        CHECK_POINT('检查接口的success', success == True)
+        if isCheckSucces == True:
+            CHECK_POINT('检查接口的success', success == True)
+        elif isCheckSucces == False:
+            CHECK_POINT('检查接口的success', success == False)
+        else:
+            INFO('isCheckSucces发生异常')
 
 
     def check_success(self,testId):
-        apiCommon().get_response(testId)
+        response = self.getResponse(testId)
+        success = response.get('success')
+        CHECK_POINT('检查接口的success', success == True)
 
-    def check_data(self,testId):
-        paramdict = apiCommon().get_response(testId)
+    def check_false(self,testId):
+        response = self.getResponse(testId)
+        success = response.get('success')
+        CHECK_POINT('检查接口的success', success == False)
+
+
+
+    def check_data(self,testId,isCheckSucces=True):
+        paramdict = apiCommon().get_response(testId, isCheckSucces)
         resData = paramdict.get('resData')
         testData = paramdict.get('testData')
         check_point_list = paramdict.get('check_point_list')

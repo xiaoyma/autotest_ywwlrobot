@@ -45,5 +45,22 @@ class mysql():
             json_data.append(item)
         return json_data
 
+    def updateSQL_interface(self,testId,interface):
+        host = 'localhost'
+        user = 'root'
+        password = '123456'
+        database = 'test'
+        sql = "UPDATE test_supply SET interface = %s WHERE testId = %s"
+        params = []
+        params.append(interface)
+        params.append(testId)
+        conn = pymysql.connect(host, user, password, database, charset='utf8')
+        cur = conn.cursor()
+        ret = cur.execute(sql, params)
+        conn.commit()
+        cur.close()
+        conn.close()
+        return ret
+
 if __name__ == '__main__':
     mysql().getOrderUpdatedAt('API-1101')
