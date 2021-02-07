@@ -1,4 +1,5 @@
 import pymysql
+from ywyrobot.common import *
 
 class mysql():
     def getOrderUpdatedAt(self,testId):
@@ -45,14 +46,21 @@ class mysql():
             json_data.append(item)
         return json_data
 
-    def updateSQL_interface(self,testId,interface):
+    def updateSQL_interface(self, testId, interface=None, testParams=None):
         host = 'localhost'
         user = 'root'
         password = '123456'
         database = 'test'
-        sql = "UPDATE test_supply SET interface = %s WHERE testId = %s"
         params = []
-        params.append(interface)
+        if interface != None and testParams == None:
+            sql = "UPDATE test_supply SET interface = %s WHERE testId = %s"
+            params.append(interface)
+        elif interface == None and testParams != None:
+            sql = "UPDATE test_supply SET testParams = %s WHERE testId = %s"
+            params.append(testParams)
+        else:
+            INFO('updateSQL_interface 是传参错误，请检查')
+            sql = ''
         params.append(testId)
         conn = pymysql.connect(host, user, password, database, charset='utf8')
         cur = conn.cursor()

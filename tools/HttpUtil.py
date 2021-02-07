@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-import requests
-import json
+import requests, json
+from testFiles.filesCommon import filesCommon
 
 '''
 created_by: 
@@ -49,3 +49,19 @@ class HttpUtil():
         token = ret['data']['userToken']
         return token
 
+    #post 请求上传文件
+    def post_upload(self, url=None, postdata=None, headers=None):
+        path = filesCommon().getFilePath()
+        postdata_dict = json.loads(postdata)
+        filesParamName = postdata_dict.get('filesParamName')
+        fileName = postdata_dict.get('fileName')
+        files = {
+            filesParamName: (open(path + '\\' + fileName, 'rb'))
+        }
+        response = requests.post(url, data=postdata_dict, files=files, headers=headers)
+        json_resp = response.json()
+        if response.status_code == 200:
+            data = json_resp.get('data')
+            return json_resp
+        else:
+            return json_resp.get('error')

@@ -69,7 +69,7 @@ class  a1207:
         STEP(2, '将SRM编号拼接成新的interface，更新数据库')
         interface = '/admin/supplierManager/deleted/' + supplierManagerNo
         testId = 'API-1207-01'
-        mysql().updateSQL_interface(testId,interface)
+        mysql().updateSQL_interface(testId=testId, interface=interface)
 
         STEP(3,'删除供应商采销 QY2021010100006')
         apiCommon().check_data(testId)

@@ -20,18 +20,11 @@ class apiCommon():
         method = ret[0].get('method')
         testResp = ret[0].get('testResp')
         check_point_list = ret[0].get('check_point')
+        remark = ret[0].get('remark')
         url = testPath + interface
         testResp = json.loads(testResp)
 
-        if method == 'get':
-            url = url + '?' + testParams
-            response = HttpUtil().get_request(url=url, headers=Global.Headers_yun)
-        elif method == 'post':
-            testParams = testParams.encode()
-            response = HttpUtil().post_request(url=url,postdata=testParams, headers=Global.Headers_yun)
-        else:
-            response = '请检查下method字段:  ' + method
-            pass
+        response = self.reponse(method,url,testParams,remark)
 
         if isCheckSucces == True:
             self.check_common(response, isCheckSucces)
@@ -56,19 +49,26 @@ class apiCommon():
         interface = ret[0].get('interface')
         testParams = ret[0].get('testParams')
         method = ret[0].get('method')
+        remark = ret[0].get('remark')
         url = testPath + interface
+        response = self.reponse(method,url,testParams,remark)
+        return response
+
+    def reponse(self, method, url, testParams, remark):
         if method == 'get':
             url = url + '?' + testParams
             response = HttpUtil().get_request(url=url, headers=Global.Headers_yun)
         elif method == 'post':
             testParams = testParams.encode()
             response = HttpUtil().post_request(url=url,postdata=testParams, headers=Global.Headers_yun)
+        elif method == 'post+file':
+            response = HttpUtil().post_upload(url=url, postdata=testParams, headers=Global.Headers_yun)
         else:
             response = '请检查下method字段:  ' + method
             pass
         return response
 
-    def get_resData(self,testId):
+    def get_respDict(self,testId):
         ret = mysql().getOrderUpdatedAt(testId)
         testPath = ret[0].get('testPath')
         interface = ret[0].get('interface')
@@ -76,25 +76,23 @@ class apiCommon():
         method = ret[0].get('method')
         testResp = ret[0].get('testResp')
         check_point_list = ret[0].get('check_point')
+        remark = ret[0].get('remark')
         url = testPath + interface
         testResp = json.loads(testResp)
 
-        if method == 'get':
-            url = url + '?' + testParams
-            response = HttpUtil().get_request(url=url, headers=Global.Headers_yun)
-        elif method == 'post':
-            testParams = testParams.encode()
-            response = HttpUtil().post_request(url=url, postdata=testParams, headers=Global.Headers_yun)
-        else:
-            response = '请检查下method字段:  ' + method
-            pass
+        response = self.reponse(method,url,testParams,remark)
 
         paramdict = {}
-        paramdict['resData'] = response.get('data')
-        paramdict['testData'] = testResp.get('data')
-        paramdict['check_point_list'] = check_point_list
+        paramdict['resp'] = response
+        paramdict['testResp'] = testResp
         return paramdict
 
+    def check_all(self,testId):
+        respDict = apiCommon().get_respDict(testId)
+        resp = respDict.get('resp')
+        testResp = respDict.get('testResp')
+        CHECK_POINT('检查两边的response相等', resp == testResp)
+        return resp
 
     def check_common(self,response,isCheckSucces=True):
         success = response.get('success')
@@ -110,6 +108,7 @@ class apiCommon():
         response = self.getResponse(testId)
         success = response.get('success')
         CHECK_POINT('检查接口的success', success == True)
+        return response
 
     def check_false(self,testId):
         response = self.getResponse(testId)
