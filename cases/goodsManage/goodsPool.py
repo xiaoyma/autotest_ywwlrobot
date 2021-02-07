@@ -3,6 +3,7 @@ from tools.apiCommon import apiCommon
 from tools.mysql import mysql
 from tools.HttpUtil import HttpUtil
 import json
+from lib.goodsCommon import goodsCommon
 
 force_tags = ['供应商','商家商品池']
 
@@ -114,6 +115,10 @@ class  a2111:
         testId = 'API-2111-02'
         apiCommon().check_data(testId)
 
+        STEP(3, '删除创建的商品')
+        ret = goodsCommon().for_del_item('自动化导入创建商品00')
+        INFO(ret)
+
 class  a2112:
     name = '商品创建-图片上传 - API-2112'
     def teststeps(self):
@@ -122,4 +127,4 @@ class  a2112:
         apiCommon().check_data(testId)
 
 if __name__ == "__main__":
-    a2112().teststeps()
+    a2111().teststeps()
