@@ -1,43 +1,60 @@
 from ywyrobot.common import *
-from lib.webCommon import webCommon
-import time
+from tools.apiCommon import apiCommon
 
-def suite_setup():
-    INFO('进入入驻审核页')
-    driver = webCommon().get_global_webdriver()
-    inAudit = driver.find_element_by_xpath("//a[@href='#/supplyManage/inAudit']")
-    inAudit.click()
+force_tags = ['供应商','入驻审核页']
 
 
-class c1101:
+class a1101:
     # 测试用例名字
-    name = '入驻审核页 - UI-1101'
+    name = '筛选 - API-1101'
 
     # 测试用例步骤
     def teststeps(self):
-        driver = webCommon().get_global_webdriver()
-        STEP(1, '筛选 进鑫门业有限公司（测试）')
-        companyName = driver.find_element_by_xpath('//*[@id="name"]')
-        companyName.send_keys('进鑫门业有限公司（测试）')
-        INFO(companyName.get_attribute('outerHTML'))
-        screen = driver.find_element_by_xpath('//*[@type="submit"]')
-        INFO(screen.text)
-        screen.click()
-        time.sleep(5)
+        STEP(1, '筛选 进鑫门业（自动化测试）')
+        testId = 'API-1101-01'
+        apiCommon().check_data(testId)
 
-        STEP(2, '检查筛选结果')
-        data = driver.find_element_by_xpath(
-            '//*[@id="app"]/section/section/main/div[2]/div[2]/div/div/div/div/div/div/table/tbody/tr[2]')
-        result_01 = data.find_element_by_xpath('td[1]').text
-        result_02 = driver.find_element_by_xpath(
-            '//*[@id="app"]/section/section/main/div[2]/div[2]/div/div/div/ul/li[1]').text
-        results = [result_01, result_02]
-        INFO(result_01 + result_02)
-        CHECK_POINT('筛选结果是否正确', results == ['进鑫门业有限公司（测试）', '共 1 条记录'])
+class a1102:
+    name = '查询类目 - API-1102'
+    def teststeps(self):
+        STEP(1, "查询类目")
+        testId = 'API-1102-01'
+        apiCommon().check_data(testId)
 
-        STEP(3, '导出筛选结果')
-        export = driver.find_element_by_xpath('//*[@id="app"]/section/section/main/div[2]/div[1]/div[2]/div/button[2]/span')
-        export.click()
-        time.sleep(10)
+class a1103:
+    name = '查询供应商详情 - API-1103'
+    def teststeps(self):
+        STEP(1, "查询供应商详情")
+        testId = 'API-1103-01'
+        apiCommon().check_data(testId)
 
+class a1104:
+    name = '下载供应商资质附件 - API-1104'
+    def teststeps(self):
+        STEP(1, "下载供应商资质附件")
+        testId = 'API-1104-01'
+        apiCommon().check_success(testId)
 
+class a1105:
+    name = '导出供应商 - API-1105'
+    def teststeps(self):
+        STEP(1, "导出供应商")
+        testId = 'API-1105-01'
+        apiCommon().check_success(testId)
+
+class a1106:
+    name = '查询业务分组 - API-1106'
+    def teststeps(self):
+        STEP(1, "查询业务分组")
+        testId = 'API-1106-01'
+        apiCommon().check_data(testId)
+
+class a1107:
+    name = '查询采销 - API-1107'
+    def teststeps(self):
+        STEP(1, "查询采销")
+        testId = 'API-1107-01'
+        apiCommon().check_data(testId)
+
+if __name__ == "__main__":
+    a1107().teststeps()
