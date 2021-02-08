@@ -145,4 +145,4 @@ class  a2212:
         INFO(ret)
 
 if __name__ == "__main__":
-    a2212().teststeps()
+    a2201().teststeps()
