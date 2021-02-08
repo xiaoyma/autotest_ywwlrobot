@@ -56,5 +56,12 @@ class a1107:
         testId = 'API-1107-01'
         apiCommon().check_data(testId)
 
+class a1108:
+    name = '供应商入驻-资质图片上传 - API-1108'
+    def teststeps(self):
+        STEP(1, "供应商入驻-资质图片上传")
+        testId = 'API-1108-01'
+        apiCommon().check_data(testId)
+
 if __name__ == "__main__":
-    a1107().teststeps()
+    a1108().teststeps()

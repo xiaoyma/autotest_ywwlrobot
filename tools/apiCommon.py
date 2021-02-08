@@ -97,23 +97,23 @@ class apiCommon():
     def check_common(self,response,isCheckSucces=True):
         success = response.get('success')
         if isCheckSucces == True:
-            CHECK_POINT('检查接口的success', success == True)
+            CHECK_POINT('检查接口的success，数据返回：' + str(response), success == True)
         elif isCheckSucces == False:
-            CHECK_POINT('检查接口的success', success == False)
+            CHECK_POINT('检查接口的success，数据返回：' + str(response), success == False)
         else:
-            INFO('isCheckSucces发生异常')
+            INFO('isCheckSucces发生异常，数据返回：' + str(response))
 
 
     def check_success(self,testId):
         response = self.getResponse(testId)
         success = response.get('success')
-        CHECK_POINT('检查接口的success', success == True)
+        CHECK_POINT('检查接口的success，数据返回：' + str(response), success == True)
         return response
 
     def check_false(self,testId):
         response = self.getResponse(testId)
         success = response.get('success')
-        CHECK_POINT('检查接口的success', success == False)
+        CHECK_POINT('检查接口的success，数据返回：' + str(response), success == False)
 
 
 
