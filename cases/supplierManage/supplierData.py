@@ -63,7 +63,7 @@ class  a1207:
     def teststeps(self):
         STEP(1, '获取当前采销列表中第二位采销的SMC编号 ')
         paramdict = apiCommon().get_response(testId='API-1204-01')
-        resData = paramdict.get('resData')
+        resData = paramdict.get('response').get('data')
         supplierManagerNo = resData.get('list')[1].get('supplierManagerNo')
 
         STEP(2, '将SRM编号拼接成新的interface，更新数据库')
@@ -102,4 +102,4 @@ class  a1210:
 
 
 if __name__ == "__main__":
-    a1209().teststeps()
+    a1207().teststeps()

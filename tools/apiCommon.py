@@ -6,15 +6,13 @@ import json
 from tools.HttpUtil import HttpUtil
 
 class apiCommon():
-    def get_response(self, testId, isCheckSucces=True , headers=Global.Headers_yun):
+    def get_response(self, testId, headers=Global.Headers_yun):
         '''
         获取接口返回结果，然后取出其中的各类参数，去请求接口，这里顺带校验了下接口返回的success值
         获取testid的数据库数据，然后去除其中data并返回
         :param testId:
         :return:
         '''
-
-
         ret = mysql().getOrderUpdatedAt(testId)
         testPath = ret[0].get('testPath')
         interface = ret[0].get('interface')
@@ -28,12 +26,17 @@ class apiCommon():
 
         response = self.reponse(method,url,testParams,remark,headers)
 
-        self.check_common(response,isCheckSucces)
-
         paramdict = {}
-        paramdict['resData'] = response.get('data')
-        paramdict['testData'] = testResp.get('data')
+        paramdict['response'] = response
+        paramdict['testResp'] = testResp
         paramdict['check_point_list'] = check_point_list
+
+        # self.check_common(response,isCheckSucces)
+        #
+        # paramdict = {}
+        # paramdict['resData'] = response.get('data')
+        # paramdict['testData'] = testResp.get('data')
+        # paramdict['check_point_list'] = check_point_list
         return paramdict
 
     def getResponse(self,testId,headers=Global.Headers_yun):
@@ -161,13 +164,19 @@ class apiCommon():
         :param headers:
         :return:
         '''
-        paramdict = apiCommon().get_response(testId, isCheckSucces,headers)
-        resData = paramdict.get('resData')
-        testData = paramdict.get('testData')
+        paramdict = apiCommon().get_response(testId,headers)
+        response = paramdict.get('response')
+        testResp = paramdict.get('testResp')
         check_point_list = paramdict.get('check_point_list')
+        #先校验下succsess
+        self.check_common(response, isCheckSucces)
         if check_point_list == '':
-            CHECK_POINT('检查点： ' + str(testData) + '返回的数据： ' + str(resData), resData == testData)
+            #校验整个response与testResp相等
+            CHECK_POINT('检查点： ' + str(testResp) + '\n****** 返回的数据  ******： ' + str(response), response == testResp)
         else:
+            #校验整个response与testResp内的Data部分内容
+            resData = response.get('data')
+            testData = testResp.get('data')
             check_point_list = eval(check_point_list)
             for check_point in check_point_list:
                 # check_point = {
