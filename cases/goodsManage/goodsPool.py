@@ -21,11 +21,15 @@ class a2101:
 class  a2102:
     name = '查询商品名称为不重复 - API-2102'
     def teststeps(self):
-        STEP(1,'查询商品名称为不重复')
+        STEP(1, '检查环境数据，存在脏数据删之')
+        ret = goodsCommon().for_del_item('自动化测试-商品创建与删除')
+        INFO(ret)
+
+        STEP(2,'查询商品名称为不重复')
         testId = 'API-2102-01'
         apiCommon().check_data(testId)
 
-        STEP(2, '查询商品名称为重复')
+        STEP(3, '查询商品名称为重复')
         testId = 'API-2102-02'
         apiCommon().check_data(testId)
 
@@ -39,22 +43,30 @@ class  a2103:
 class  a2104:
     name = '创建商品-校验国际码为不重复 - API-2104'
     def teststeps(self):
-        STEP(1,'创建商品-校验国际码为不重复')
+        STEP(1, '检查环境数据，存在脏数据删之')
+        ret = goodsCommon().for_del_item('自动化测试-商品创建与删除')
+        INFO(ret)
+
+        STEP(2,'创建商品-校验国际码为不重复')
         testId = 'API-2104-01'
         apiCommon().check_data(testId)
 
-        STEP(2, '创建商品-校验国际码为重复')
+        STEP(3, '创建商品-校验国际码为重复')
         testId = 'API-2104-02'
         apiCommon().check_data(testId)
 
 class  a2105:
     name = '创建商品 - API-2105'
     def teststeps(self):
-        STEP(1,'创建商品')
+        STEP(1, '检查环境数据，存在脏数据删之')
+        ret = goodsCommon().for_del_item('自动化测试-商品创建与删除')
+        INFO(ret)
+
+        STEP(2,'创建商品')
         testId = 'API-2105-01'
         response = apiCommon().check_success(testId)
 
-        STEP(2, '将创建的商品编号存进删除用例的testParams中')
+        STEP(3, '将创建的商品编号存进删除用例的testParams中')
         itemNo = response.get('data').get('itemNo')
         testParams = json.dumps({"no": itemNo})
         testId = 'API-2106-01'

@@ -34,11 +34,14 @@ class goodsCommon():
         :return:
         '''
         itemNo_list = self.get_itemNo(itemName)
-        ret_list = []
-        for itemNo in itemNo_list:
-            ret = self.del_item(itemNo)
-            ret_list.append(ret)
-        return ret_list
+        if itemNo_list == []:
+            return '未查到相关记录： ' + itemName
+        else:
+            ret_list = []
+            for itemNo in itemNo_list:
+                ret = self.del_item(itemNo)
+                ret_list.append(ret)
+            return ret_list
 
 
     def get_submitUniqueNo(self,itemName):
@@ -77,13 +80,16 @@ class goodsCommon():
         :return:
         '''
         submitUniqueNo_list = self.get_submitUniqueNo(itemName)
-        ret_list = []
-        for submitUniqueNo in submitUniqueNo_list:
-            ret_return = self.return_submit(submitUniqueNo)
-            ret_list.append(ret_return)
-            ret_del = self.del_submit(submitUniqueNo)
-            ret_list.append(ret_del)
-        return ret_list
+        if submitUniqueNo_list == []:
+            return '未查到相关记录： ' + itemName
+        else:
+            ret_list = []
+            for submitUniqueNo in submitUniqueNo_list:
+                ret_return = self.return_submit(submitUniqueNo)
+                ret_list.append(ret_return)
+                ret_del = self.del_submit(submitUniqueNo)
+                ret_list.append(ret_del)
+            return ret_list
 
 if __name__ == "__main__":
 

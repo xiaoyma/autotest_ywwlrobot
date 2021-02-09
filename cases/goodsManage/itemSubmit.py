@@ -57,7 +57,11 @@ class  a2204:
 class  a2205:
     name = '创建提报-成功创建 - API-2205'
     def teststeps(self):
-        STEP(1,'创建提报-成功创建')
+        STEP(1, '检查测试数据纯净，若有脏数据，删之')
+        ret = goodsCommon().for_del_submit('自动化商品提报2021-02-07（勿动）')
+        INFO(ret)
+
+        STEP(2,'创建提报-成功创建')
         testId = 'API-2205-01'
         apiCommon().check_data(testId)
 
