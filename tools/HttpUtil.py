@@ -52,8 +52,11 @@ class HttpUtil():
     #post 请求上传文件
     def post_upload(self, url=None, postdata=None, headers=None):
         path = filesCommon().getFilePath()
+        #获取待上传文件当前所在的目录testFiles的路径
         postdata_dict = json.loads(postdata)
+        #获取上传文件在接口中定义的参数名，该名称存在数据库testParams中
         filesParamName = postdata_dict.get('filesParamName')
+        #获取上传文件的文件名称，该名称存在数据库testParams中
         fileName = postdata_dict.get('fileName')
         files = {
             filesParamName: (open(path + '\\' + fileName, 'rb'))

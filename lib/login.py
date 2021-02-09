@@ -10,7 +10,7 @@ params: 获取tonken
 '''
 
 class Login():
-    def login_yun(self):
+    def login_yun(self,userPhone='18800000000',userPasswd='123456'):
         headers = {
             "Host": "api-auth.ywwl.com",
             "Connection": "keep-alive",
@@ -23,7 +23,7 @@ class Login():
             "Accept-Language": "zh-CN,zh;q=0.9",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36"
         }
-        params = {"userPhone": "18800000000", "userPasswd": "123456", "projectId": "PROSUPPLIER"}
+        params = {"userPhone": userPhone, "userPasswd": userPasswd, "projectId": "PROSUPPLIER"}
         url = "https://api-auth.ywwl.com/user/login"
         x = HttpUtil()
         response = x.post_requestCookies(url,params,headers)

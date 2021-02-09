@@ -28,6 +28,11 @@ class goodsCommon():
         return response
 
     def for_del_item(self,itemName):
+        '''
+        删除查询到的所有商品
+        :param itemName:
+        :return:
+        '''
         itemNo_list = self.get_itemNo(itemName)
         ret_list = []
         for itemNo in itemNo_list:
@@ -66,6 +71,11 @@ class goodsCommon():
         return response
 
     def for_del_submit(self,itemName):
+        '''
+        撤回并删除查询出来的提拨记录
+        :param itemName:
+        :return:
+        '''
         submitUniqueNo_list = self.get_submitUniqueNo(itemName)
         ret_list = []
         for submitUniqueNo in submitUniqueNo_list:
