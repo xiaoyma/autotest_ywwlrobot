@@ -51,5 +51,13 @@ mysql208 = {
     'DBbase_208_test' : 'test'
 }
 
+#本地测试库
+mysq_local = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': '123456',
+    'database': 'test'
+}
+
 
 

@@ -8,6 +8,7 @@ from lib.login import Login
 
 force_tags = ['供应商','合同列表']
 
+#用于合同模块
 headers = {
     "x-token": Login().login_yun(userPhone='18316321174',userPasswd='123456')
 }

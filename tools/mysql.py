@@ -1,16 +1,24 @@
 import pymysql
 from ywyrobot.common import *
+from cfg import Global
+from tools.mysqlHelper import mysqlHelper
 
 class mysql():
-    def getOrderUpdatedAt(self,testId):
+    def getOrderUpdatedAt(self,testId=None,module=None):
         host = 'localhost'
         user = 'root'
         password = '123456'
         database = 'test'
-        sql = "SELECT id,testId,`module`, `function`, interface, testPath, method, testParams, testResp, check_point, remark, `status` FROM `test_supply` WHERE `status` = 0 and"
+        sql = "SELECT id,testId,`module`, `function`, interface, testPath, method, testParams, testResp, check_point, remark, `status` FROM `test_supply` WHERE `status` = 0"
+        sql_sort_time = ' order by id desc '
         params = []
-        sql += " testId = %s "
-        params.append(testId)
+        if testId:
+            sql += " and testId = %s "
+            params.append(testId)
+        if module:
+            sql +=" and module = %s "
+            params.append(module)
+        sql += sql_sort_time
         conn = pymysql.connect(host, user, password, database, charset='utf8')
         cur = conn.cursor()
         cur.execute(sql,params)
@@ -69,6 +77,8 @@ class mysql():
         cur.close()
         conn.close()
         return ret
+
+
 
 if __name__ == '__main__':
     mysql().getOrderUpdatedAt('API-1101')

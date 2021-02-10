@@ -29,6 +29,25 @@ class Login():
         response = x.post_requestCookies(url,params,headers)
         return response
 
+    # def login_yun(self,userPhone='18316321174',userPasswd='123456'):
+    #     headers = {
+    #         "Host": "test-api-auth.ywwl.com",
+    #         "Connection": "keep-alive",
+    #         "Content-Length": "73",
+    #         "Content-Type": "application/json;charset=UTF-8",
+    #         "Accept": "*/*",
+    #         "Origin": "http://framework.test.ywwl.com",
+    #         "Referer": "http://framework.test.ywwl.com/",
+    #         "Accept-Language": "zh-CN,zh;q=0.9",
+    #         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36"
+    #     }
+    #     params = {"userPhone": userPhone, "userPasswd": userPasswd, "projectId": "PROSUPPLIER"}
+    #     # url = "https://api-auth.ywwl.com/user/login"
+    #     url = 'http://test-api-auth.ywwl.com/user/login'
+    #     x = HttpUtil()
+    #     response = x.post_requestCookies(url,params,headers)
+    #     return response
+
     # def login_sso(self):
     #     operUrl = "http://oper.98u.com/sso/login.html"
     #     operHeaders = {
