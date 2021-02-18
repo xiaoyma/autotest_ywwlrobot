@@ -5,7 +5,7 @@ from tools.HttpUtil import HttpUtil
 import json
 from lib.goodsCommon import goodsCommon
 
-force_tags = ['供应商','商家商品池']
+force_tags = ['供应商内部端','商家商品池']
 
 
 class a2101:

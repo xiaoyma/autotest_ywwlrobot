@@ -7,7 +7,7 @@ from lib.goodsCommon import goodsCommon
 from lib.login import Login
 from lib.contracCommon import contracCommon
 
-force_tags = ['供应商','合同相关动作']
+force_tags = ['供应商内部端','合同相关动作']
 
 #用于合同模块
 headers = {

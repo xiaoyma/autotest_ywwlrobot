@@ -6,7 +6,7 @@ import json
 from lib.goodsCommon import goodsCommon
 from lib.login import Login
 
-force_tags = ['供应商','合同列表']
+force_tags = ['供应商内部端','合同列表']
 
 #用于合同模块
 headers = {

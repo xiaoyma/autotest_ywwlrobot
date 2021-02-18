@@ -2,7 +2,7 @@ from ywyrobot.common import *
 from tools.apiCommon import apiCommon
 from tools.mysql import mysql
 
-force_tags = ['供应商','信息管理页']
+force_tags = ['供应商内部端','信息管理页']
 
 
 class a1201:

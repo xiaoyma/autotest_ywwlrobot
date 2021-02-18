@@ -1,7 +1,7 @@
 from ywyrobot.common import *
 from tools.apiCommon import apiCommon
 
-force_tags = ['供应商','入驻审核页']
+force_tags = ['供应商内部端','入驻审核页']
 
 
 class a1101:

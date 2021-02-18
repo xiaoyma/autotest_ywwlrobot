@@ -5,7 +5,7 @@ from tools.HttpUtil import HttpUtil
 import json
 from lib.goodsCommon import goodsCommon
 
-force_tags = ['供应商','商品提报']
+force_tags = ['供应商内部端','商品提报']
 
 class a2201:
     # 测试用例名字
