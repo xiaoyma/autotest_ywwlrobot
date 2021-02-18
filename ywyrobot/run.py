@@ -49,10 +49,9 @@ def main():
         reportHan()
         os.system('log.html')
 
-    #发送测试报告邮件
-    if ret < 5:
-        email_ret = SendEmail().send_mail()
-        result['email'] = email_ret
+    # 发送测试报告邮件
+    email_ret = SendEmail().send_mail()
+    result['email'] = email_ret
     return result
 
 if __name__ == '__main__':

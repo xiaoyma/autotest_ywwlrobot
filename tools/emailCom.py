@@ -31,6 +31,7 @@ class SendEmail(object):
         .table_path {background-color:#FFCC99; width:0%; text-align:center; padding:0 10px;}
         </style></head> 
          <div class="header"><h1>自动化测试报告</h1></div>
+         <div class="header"><h4>PS:详情附件不支持预览，请下载后查看</h4></div>
         '''
 
         self.table_head = '''<div class="report_style"><table class="report_table">
@@ -46,7 +47,7 @@ class SendEmail(object):
         :return:
         """
         content_dict = self.get_value_from_html()
-        table_tile = ['Total Statistics', 'Statistics by Tag', 'Statistics by Suite']
+        table_tile = ['全局统计', '根据标签统计', '根据套件统计']
         table_head_html = ''
         for a in range(len(content_dict)):
             table_dict = content_dict[a]
@@ -113,7 +114,7 @@ class SendEmail(object):
         mail_postfix = "qq.com"
         today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
         detail_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-        send_header = "自动化测试报告 " + today + " " + detail_time  # 邮件标题
+        send_header = "SRM供应商-自动化测试报告 " + today + " " + detail_time  # 邮件标题
         msg = MIMEMultipart()
         msg['Subject'] = send_header
         msg['From'] = sender
