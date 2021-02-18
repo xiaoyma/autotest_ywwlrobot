@@ -140,7 +140,7 @@ class a3116:
         testId = 'API-3116-02'
         apiCommon().check_data(testId=testId, headers=headers)
 
-        STEP(1, '获取流程节点-重大合同')
+        STEP(3, '获取流程节点-重大合同')
         testId = 'API-3116-03'
         apiCommon().check_data(testId=testId, headers=headers)
 
@@ -206,4 +206,4 @@ class a3123:
         apiCommon().check_data(testId=testId,headers=headers)
 
 if __name__ == "__main__":
-    a3123().teststeps()
+    a3116().teststeps()
