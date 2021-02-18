@@ -1,5 +1,4 @@
 import os,sys,pprint
-
 #print(sys.path)
 
 print('\n根据环境变量Path，使用python解释器: %s\n' % sys.executable)
@@ -10,6 +9,7 @@ if sys.version_info.major != 3:
 
 
 from ywyrobot.core import reportHan,convert2RF,runRF,clearRobotFile
+from tools.emailCom import SendEmail
 
 def main():
 
@@ -49,6 +49,10 @@ def main():
         reportHan()
         os.system('log.html')
 
+    #发送测试报告邮件
+    if ret < 5:
+        email_ret = SendEmail().send_mail()
+        result['email'] = email_ret
     return result
 
 if __name__ == '__main__':
