@@ -1,18 +1,38 @@
 # -- coding: UTF-8 --
 from lib.login import Login
 import time
+from ywyrobot import run
 
 '''
 created_by: 
 created_At: 2020-04-17
 params: 配置信息
 '''
+host_all = run.host_all
+print("*********************************************************************************************")
+print(host_all)
+print("*********************************************************************************************")
+
+
+if host_all == 'TEST':
+    host_supplier = "http://test-api-srm-supplier.ywwl.com"
+    login_yun_url = 'http://test-api-auth.ywwl.com/user/login'
+    login_yun_account = '18316321174'
+    login_yun_password = '123456'
+else:
+    host_supplier = "https://api-srm-supplier.ywwl.com"
+    login_yun_url = 'https://api-auth.ywwl.com/user/login'
+    login_yun_account = '18800000000'
+    login_yun_password = '123456'
+
+
+tonken_yun = Login().login_yun(userPhone=login_yun_account, userPasswd=login_yun_password, url=login_yun_url)
 
 #线上域名
-baseUrl = "https://api-srm-supplier.ywwl.com"
+# baseUrl = "https://api-srm-supplier.ywwl.com"
 
 #获取tonken
-tonken_yun = Login().login_yun()
+# tonken_yun = Login().login_yun()
 
 Headers_yun = {
     "x-token": tonken_yun

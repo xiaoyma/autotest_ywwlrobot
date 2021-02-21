@@ -24,6 +24,9 @@ HYROBOT_ARGS = [
     '--delrf',
     '--runrf',
     '--hanrf',
+    '--Email',
+    '--TEST',
+    '--PRD',
 ]
 
 def myprint(level=2, *args,**kwargs):

@@ -5,12 +5,13 @@ from tools.HttpUtil import HttpUtil
 import json
 from lib.goodsCommon import goodsCommon
 from lib.login import Login
+from cfg import Global
 
 force_tags = ['供应商内部端','合同列表']
 
 #用于合同模块
 headers = {
-    "x-token": Login().login_yun(userPhone='18316321174',userPasswd='123456')
+    "x-token": Login().login_yun(userPhone='18316321174',userPasswd='123456', url=Global.login_yun_url)
 }
 
 class a3101:

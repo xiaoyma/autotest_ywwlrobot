@@ -7,9 +7,10 @@ if sys.version_info.major != 3:
     print("黑羽robot只支持 Python 3 版本")
     exit()
 
-
 from ywyrobot.core import reportHan,convert2RF,runRF,clearRobotFile
 from tools.emailCom import SendEmail
+
+host_all = ''
 
 def main():
 
@@ -36,6 +37,21 @@ def main():
         reportHan()
         exit(0)
 
+    #判断执行测试环境还是正式环境
+    global host_all
+    if '--TEST' in sys.argv:
+        host_all = 'TEST'
+        print("指定为测试环境，将执行测试环境的用例")
+    elif '--PRD' in sys.argv:
+        host_all = 'PRD'
+        print("指定为正式环境，将执行正式环境的用例")
+    else:
+        print('未指定环境，将默认执行正式环境')
+        host_all = 'PRD'
+
+    is_send = ''
+    if '--Email' in sys.argv:
+        is_send = '0'
 
     # 所有步骤都执行
     convert2RF()
@@ -50,8 +66,9 @@ def main():
         os.system('log.html')
 
     # 发送测试报告邮件
-    email_ret = SendEmail().send_mail()
-    result['email'] = email_ret
+    if is_send == '0':
+        email_ret = SendEmail().send_mail()
+        result['email'] = email_ret
     return result
 
 if __name__ == '__main__':

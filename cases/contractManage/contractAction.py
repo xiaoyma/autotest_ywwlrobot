@@ -6,12 +6,13 @@ import json
 from lib.goodsCommon import goodsCommon
 from lib.login import Login
 from lib.contracCommon import contracCommon
+from cfg import Global
 
 force_tags = ['供应商内部端','合同相关动作']
 
 #用于合同模块
 headers = {
-    "x-token": Login().login_yun(userPhone='18316321174',userPasswd='123456')
+    "x-token": Login().login_yun(userPhone='18316321174',userPasswd='123456', url=Global.login_yun_url)
 }
 
 class a3201:
@@ -102,7 +103,7 @@ class a3206:
         STEP(6, '执行审核驳回')
         # 用于审核驳回
         headers_nixing = {
-            "x-token": Login().login_yun(userPhone='13732237699', userPasswd='123456')
+            "x-token": Login().login_yun(userPhone='18316321174',userPasswd='123456', url=Global.login_yun_url)
         }
         apiCommon().check_data(testId=testId, headers=headers_nixing)
 
