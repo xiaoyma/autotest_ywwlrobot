@@ -103,7 +103,7 @@ class a3206:
         STEP(6, '执行审核驳回')
         # 用于审核驳回
         headers_nixing = {
-            "x-token": Login().login_yun(userPhone='18316321174',userPasswd='123456', url=Global.login_yun_url)
+            "x-token": Login().login_yun(userPhone='13732237699',userPasswd='123456', url=Global.login_yun_url)
         }
         apiCommon().check_data(testId=testId, headers=headers_nixing)
 
