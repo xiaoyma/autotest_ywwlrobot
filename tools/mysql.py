@@ -1,7 +1,9 @@
-import pymysql
+import pymysql, time
 from ywyrobot.common import *
 from cfg import Global
 from tools.mysqlHelper import mysqlHelper
+
+evn = Global.evn
 
 class mysql():
     def getOrderUpdatedAt(self,testId=None,module=None):
@@ -9,9 +11,11 @@ class mysql():
         user = 'root'
         password = '123456'
         database = 'test'
-        sql = "SELECT id,testId,`module`, `function`, interface, testPath, method, testParams, testResp, check_point, remark, `status` FROM `test_supply` WHERE `status` = 0"
-        sql_sort_time = ' order by id desc '
+        sql = "SELECT id,testId,`module`, `function`, interface, testPath, method, testParams, testResp, check_point, remark, evn, `status`, updateTime, createTime FROM `test_supply` WHERE `status` = 0"
         params = []
+        sql += ' and evn = %s'
+        params.append(evn)
+        sql_sort_time = ' order by id desc '
         if testId:
             sql += " and testId = %s "
             params.append(testId)
@@ -60,16 +64,21 @@ class mysql():
         password = '123456'
         database = 'test'
         params = []
+        updateTime = str(time.strftime("%Y-%m-%d %H:%M:%S"))
         if interface != None and testParams == None:
-            sql = "UPDATE test_supply SET interface = %s WHERE testId = %s"
+            sql = "UPDATE test_supply SET interface = %s, updateTime = %s WHERE testId = %s AND evn = %s"
             params.append(interface)
+            params.append(updateTime)
         elif interface == None and testParams != None:
-            sql = "UPDATE test_supply SET testParams = %s WHERE testId = %s"
+            sql = "UPDATE test_supply SET testParams = %s, updateTime = %s WHERE testId = %s AND evn = %s"
             params.append(testParams)
+            params.append(updateTime)
         else:
             INFO('updateSQL_interface 是传参错误，请检查')
             sql = ''
+
         params.append(testId)
+        params.append(evn)
         conn = pymysql.connect(host, user, password, database, charset='utf8')
         cur = conn.cursor()
         ret = cur.execute(sql, params)

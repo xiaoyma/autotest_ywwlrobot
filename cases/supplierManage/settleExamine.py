@@ -64,4 +64,4 @@ class a1108:
         apiCommon().check_data(testId)
 
 if __name__ == "__main__":
-    a1108().teststeps()
+    a1101().teststeps()

@@ -10,7 +10,8 @@ if sys.version_info.major != 3:
 from ywyrobot.core import reportHan,convert2RF,runRF,clearRobotFile
 from tools.emailCom import SendEmail
 
-host_all = ''
+#正式环境：PRD  测试环境：TEST
+evn = 'PRD'
 
 def main():
 
@@ -38,16 +39,16 @@ def main():
         exit(0)
 
     #判断执行测试环境还是正式环境
-    global host_all
+    global evn
     if '--TEST' in sys.argv:
-        host_all = 'TEST'
+        evn = 'TEST'
         print("指定为测试环境，将执行测试环境的用例")
     elif '--PRD' in sys.argv:
-        host_all = 'PRD'
+        evn = 'PRD'
         print("指定为正式环境，将执行正式环境的用例")
     else:
         print('未指定环境，将默认执行正式环境')
-        host_all = 'PRD'
+        evn = 'PRD'
 
     is_send = ''
     if '--Email' in sys.argv:

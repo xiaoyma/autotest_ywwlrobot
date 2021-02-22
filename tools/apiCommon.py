@@ -160,7 +160,7 @@ class apiCommon():
         '''
         校验response和testParams中的data部分数据是否相等
         :param testId:
-        :param isCheckSucces:
+        :param isCheckSucces:默认校验接口的success == True ,传False则校验success == False
         :param headers:
         :return:
         '''

@@ -21,11 +21,11 @@ class a2201:
         testId = 'API-2201-02'
         apiCommon().check_data(testId=testId,isCheckSucces=False)
 
-        STEP(3, 'SPU编号申请提报-SPU编号存在')
+        STEP(3, 'SPU编号申请提报-SPU编号存在,可以提报')
         testId = 'API-2201-03'
         apiCommon().check_data(testId)
 
-        STEP(4, '国际码申请提报-国际码存在')
+        STEP(4, '国际码申请提报-国际码存在，可以提报')
         testId = 'API-2201-04'
         apiCommon().check_data(testId)
 

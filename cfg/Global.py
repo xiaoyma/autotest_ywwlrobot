@@ -8,13 +8,13 @@ created_by:
 created_At: 2020-04-17
 params: 配置信息
 '''
-host_all = run.host_all
+evn = run.evn
 print("*********************************************************************************************")
-print(host_all)
+print(evn)
 print("*********************************************************************************************")
 
 
-if host_all == 'TEST':
+if evn == 'TEST':
     host_supplier = "http://test-api-srm-supplier.ywwl.com"
     login_yun_url = 'http://test-api-auth.ywwl.com/user/login'
     login_yun_account = '18316321174'
@@ -27,6 +27,7 @@ else:
 
 
 tonken_yun = Login().login_yun(userPhone=login_yun_account, userPasswd=login_yun_password, url=login_yun_url)
+print(tonken_yun)
 
 #线上域名
 # baseUrl = "https://api-srm-supplier.ywwl.com"
