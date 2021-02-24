@@ -9,7 +9,9 @@ if sys.version_info.major != 3:
 
 #判断执行测试环境还是正式环境
 def EVN():
-    f = open(r"D:\Project\autotest_ywwlrobot\testFiles\evn.txt",mode="w",encoding='utf-8')
+    evn_path = os.path.dirname(os.path.abspath(__file__))
+    evn_path = os.path.join(evn_path, "evn.txt")
+    f = open(evn_path,mode="w",encoding='utf-8')
     f.write(evn)
     f.close()
 

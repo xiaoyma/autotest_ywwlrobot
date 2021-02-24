@@ -1,14 +1,16 @@
 # -- coding: UTF-8 --
 from lib.login import Login
-import time
+import time, os
 '''
 created_by: 
 created_At: 2020-04-17
 params: 配置信息
 '''
 
-
-f = open(r"D:\Project\autotest_ywwlrobot\testFiles\evn.txt",mode="r",encoding='utf-8')
+evn_path = os.path.dirname(os.path.abspath(__file__))
+evn_path = evn_path.split(r"\cfg")[0]
+evn_path = os.path.join(evn_path, "ywyrobot\evn.txt")
+f = open(evn_path,mode="r",encoding='utf-8')
 evn = f.read()
 f.close()
 
