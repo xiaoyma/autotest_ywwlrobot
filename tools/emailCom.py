@@ -9,13 +9,14 @@ from email.mime.multipart import MIMEMultipart
 import os.path
 import re
 from bs4 import BeautifulSoup
+from cfg import Global
 
 
 class SendEmail(object):
     def __init__(self):
         self.log_path = self.get_log_path('log.html')
         self.report_path = self.get_log_path('report.html')
-        self.head = '''
+        head = '''
         <head><style type="text/css">
         .report_style{margin:20px 10%}        
         .header{text-align:center;width:100%;font-family:"Times New Roman"}    
@@ -30,9 +31,12 @@ class SendEmail(object):
         .table_head {background-color: #66CCFF; text-align:center; font-weight:bold; padding:0 10px;} 
         .table_path {background-color:#FFCC99; width:0%; text-align:center; padding:0 10px;}
         </style></head> 
-         <div class="header"><h1>自动化测试报告</h1></div>
+         <div class="header"><h1>自动化测试报告-执行环境：</h1></div>
          <div class="header"><h4>PS:详情附件不支持预览，请下载后查看</h4></div>
         '''
+
+        self.evn = "执行环境：" + Global.evn
+        self.head = head.replace("执行环境：",self.evn)
 
         self.table_head = '''<div class="report_style"><table class="report_table">
         <tr><th colspan="6" class="report_table_title">table_title_name</th></tr>
@@ -114,7 +118,7 @@ class SendEmail(object):
         mail_postfix = "qq.com"
         today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
         detail_time = time.strftime('%H:%M:%S', time.localtime(time.time()))
-        send_header = "SRM供应商-自动化测试报告 " + today + " " + detail_time  # 邮件标题
+        send_header = "SRM供应商-自动化测试报告-" + self.evn + " " + today + " " + detail_time  # 邮件标题
         msg = MIMEMultipart()
         msg['Subject'] = send_header
         msg['From'] = sender
