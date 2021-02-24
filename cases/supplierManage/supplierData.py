@@ -8,7 +8,6 @@ force_tags = ['供应商内部端','信息管理页']
 class a1201:
     # 测试用例名字
     name = '筛选 - API-1201'
-    tags = ['测试供应商信息筛选']
     # 测试用例步骤
     def teststeps(self):
         STEP(1, '筛选 进鑫门业（自动化测试）退')

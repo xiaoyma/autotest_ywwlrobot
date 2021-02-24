@@ -1,14 +1,17 @@
 # -- coding: UTF-8 --
 from lib.login import Login
 import time
-from ywyrobot import run
-
 '''
 created_by: 
 created_At: 2020-04-17
 params: 配置信息
 '''
-evn = run.evn
+
+
+f = open(r"D:\Project\autotest_ywwlrobot\testFiles\evn.txt",mode="r",encoding='utf-8')
+evn = f.read()
+f.close()
+
 print("*********************************************************************************************")
 print(evn)
 print("*********************************************************************************************")
@@ -19,11 +22,13 @@ if evn == 'TEST':
     login_yun_url = 'http://test-api-auth.ywwl.com/user/login'
     login_yun_account = '18316321174'
     login_yun_password = '123456'
+    force_tags = ['供应商接口用例总数（TEST）']
 else:
     host_supplier = "https://api-srm-supplier.ywwl.com"
     login_yun_url = 'https://api-auth.ywwl.com/user/login'
     login_yun_account = '18800000000'
     login_yun_password = '123456'
+    force_tags = ['供应商接口用例总数（PRD）']
 
 
 tonken_yun = Login().login_yun(userPhone=login_yun_account, userPasswd=login_yun_password, url=login_yun_url)

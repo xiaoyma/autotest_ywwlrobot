@@ -7,7 +7,7 @@ from tools.HttpUtil import HttpUtil
 
 class goodsCommon():
     def get_itemNo(self,itemName):
-        url = 'https://api-srm-supplier.ywwl.com/admin/supplier/item/list/page'
+        url = Global.host_supplier + '/admin/supplier/item/list/page'
         data = {"index":1,"size":10,"itemName":itemName,"categoryNoPath":"","updateStartTime":None,"updateEndTime":None}
         data = json.dumps(data)
         response = HttpUtil().post_request(url=url,postdata=data,headers=Global.Headers_yun)
@@ -20,7 +20,7 @@ class goodsCommon():
         return itemNo_list
 
     def del_item(self,itemNo):
-        url = 'https://api-srm-supplier.ywwl.com/admin/supplier/item/delete'
+        url = Global.host_supplier + '/admin/supplier/item/delete'
         data = {"no":itemNo}
         data = json.dumps(data)
         response = HttpUtil().post_request(url=url,postdata=data,headers=Global.Headers_yun)
@@ -45,7 +45,7 @@ class goodsCommon():
 
 
     def get_submitUniqueNo(self,itemName):
-        url = 'https://api-srm-supplier.ywwl.com/admin/supply/submit/daily/list/page'
+        url = Global.host_supplier + '/admin/supply/submit/daily/list/page'
         data = {"index":1,"size":10,"isDailyOnly":True,"submitBatchNo":"","spuName":itemName,"spuNo":"","supplyType":"","submitStatus":"","submitTimeStart":"","submitTimeEnd":""}
         data = json.dumps(data)
         response = HttpUtil().post_request(url=url, postdata=data, headers=Global.Headers_yun)
@@ -58,7 +58,7 @@ class goodsCommon():
         return submitUniqueNo_list
 
     def return_submit(self,submitUniqueNo):
-        url = 'https://api-srm-supplier.ywwl.com/admin/supply/submit/undo'
+        url = Global.host_supplier + '/admin/supply/submit/undo'
         data = 'submitUniqueNo=' + submitUniqueNo
         url = url + '?' + data
         response = HttpUtil().get_request(url=url,headers=Global.Headers_yun)
@@ -66,7 +66,7 @@ class goodsCommon():
         return response
 
     def del_submit(self,submitUniqueNo):
-        url = 'https://api-srm-supplier.ywwl.com/admin/supply/submit/delete'
+        url = Global.host_supplier + '/admin/supply/submit/delete'
         data = 'submitUniqueNo=' + submitUniqueNo
         url = url + '?' + data
         response = HttpUtil().get_request(url=url,headers=Global.Headers_yun)

@@ -7,14 +7,32 @@ if sys.version_info.major != 3:
     print("黑羽robot只支持 Python 3 版本")
     exit()
 
+#判断执行测试环境还是正式环境
+def EVN():
+    f = open(r"D:\Project\autotest_ywwlrobot\testFiles\evn.txt",mode="w",encoding='utf-8')
+    f.write(evn)
+    f.close()
+
+if '--TEST' in sys.argv:
+    evn = 'TEST'
+    EVN()
+    print("指定为测试环境，将执行测试环境的用例")
+elif '--PRD' in sys.argv:
+    evn = 'PRD'
+    EVN()
+    print("指定为正式环境，将执行正式环境的用例")
+else:
+    print('未指定环境，将默认执行正式环境')
+    evn = 'PRD'
+print(evn)
+
+
+
 from ywyrobot.core import reportHan,convert2RF,runRF,clearRobotFile
 from tools.emailCom import SendEmail
 
-#正式环境：PRD  测试环境：TEST
-evn = 'PRD'
 
 def main():
-
     # 运行结果存入字典
     result = {}
 
@@ -38,18 +56,7 @@ def main():
         reportHan()
         exit(0)
 
-    #判断执行测试环境还是正式环境
-    global evn
-    if '--TEST' in sys.argv:
-        evn = 'TEST'
-        print("指定为测试环境，将执行测试环境的用例")
-    elif '--PRD' in sys.argv:
-        evn = 'PRD'
-        print("指定为正式环境，将执行正式环境的用例")
-    else:
-        print('未指定环境，将默认执行正式环境')
-        evn = 'PRD'
-
+    #是否发送报告邮件
     is_send = ''
     if '--Email' in sys.argv:
         is_send = '0'
