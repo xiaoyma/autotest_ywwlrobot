@@ -155,7 +155,6 @@ class apiCommon():
         CHECK_POINT('检查接口的success，数据返回：' + str(response), success == False)
 
 
-
     def check_data(self,testId,isCheckSucces=True,headers=Global.Headers_yun):
         '''
         校验response和testParams中的data部分数据是否相等
@@ -174,68 +173,127 @@ class apiCommon():
             #校验整个response与testResp相等
             CHECK_POINT('检查点： ' + str(testResp) + '\n****** 返回的数据  ******： ' + str(response), response == testResp)
         else:
-            #校验整个response与testResp内的Data部分内容
-            resData = response.get('data')
-            testData = testResp.get('data')
+            #校验整个response与testResp内的对应值
             check_point_list = eval(check_point_list)
-            for check_point in check_point_list:
-                # check_point = {
-                #     'first_param__name': 'list',
-                #     'second_param__name': 0,
-                #     'third_param__name': 'name'
-                # }
-                apiCommon().check_branch(resData, testData, check_point=check_point)
+            apiCommon().check_branch(check_point_list, response, testResp)
 
-    def check_branch(self,resData,testData,check_point=None):
+
+    def check_branch(self,check_point_list,response,testResp=None):
         '''
-        根据check_point中的值，判断是校验整个data数据，还是校验data下的一级字段，还是校验data下的二级字段
-        :param resData: respoonse中的整个data数据
-        :param testData: testResp中的整个data数据
-        :param check_point: 可传入srt， dict，srt 则校验resData和testData中的一级字段，dict  则校验resData和testData中的二级或三级字段
+        根据数据库中check_point的字段与值，分别校验response/testResp中对应字段的值
+        :param check_point_list:
+        :param response:
+        :param testResp:
         :return:
         '''
-        param_type = type(check_point)
-        if param_type == dict:
+        for checkPoint in check_point_list:
+            if type(checkPoint) == dict:
+                #例：check_point_list = [{"result.data.list.-1.name2":"董承1"},{"result.data.list.0.name1":"麻小"}]
+                paramsPathStr = list(checkPoint.keys())[0]
+                value = checkPoint[paramsPathStr]
+                paramsPath = paramsPathStr.split(".")
+                check_result = response
+                for params in paramsPath:
+                    if params.lstrip("-").isdigit():
+                        params = int(params)
+                    check_result = check_result[params]
+                CHECK_POINT('检查点： ' + str(checkPoint) + '\n****** 返回的数据  ******： ' + str(check_result), check_result == value)
 
-            # print('是字典')
-            first_param__name = check_point.get('first_param__name')
-            second_param__name = check_point.get('second_param__name')
-            if type(second_param__name) == str:
-                '''
-                    实例：
-                    数据库存的check_point = [{'first_param__name': 'fileDetail','second_param__name': 'uploadFileName'},{'first_param__name': 'list','second_param__name': 'FileUrl'}]，分别取出的值均为dict,但只有二级字段
-                    会分别校验resData和testData中data['fileDetail']['uploadFileName']字段和data['fileDetail']['FileUrl']的值是否相等
-                '''
-                res_param = resData.get(first_param__name).get(second_param__name)
-                test_param = testData.get(first_param__name).get(second_param__name)
-            elif type(second_param__name) == int:
-                '''
-                    实例：
-                    数据库存的check_point = [{'first_param__name': 'list','second_param__name': 0,'third_param__name': 'uploadFileName'},{'first_param__name': 'list','second_param__name': 0,'third_param__name': 'FileUrl'}]，分别取出的值均为dict，且有三级字段
-                    会分别校验resData和testData中data['list'][0]['uploadFileName']字段和data['list'][0]['FileUrl']的值是否相等
-                '''
-                third_param__name = check_point.get('third_param__name')
-                res_param = resData.get(first_param__name)[second_param__name].get(third_param__name)
-                test_param = testData.get(first_param__name)[second_param__name].get(third_param__name)
             else:
-                res_param = 'res_param参数异常：  second_param__name传值错误  当前类型为  ' + type(second_param__name)
-                test_param = 'test_param参数异常：  second_param__name传值错误  当前类型为  ' + type(second_param__name)
-        elif param_type == str:
-            '''
-                实例：
-                数据库存的check_point = ['errorInfo','failNum','importSuccess','successNum']，分别取出的值均为str
-                会分别校验resData和testData中errorInfo，failNum...等字段的值是否相等
-            '''
-            # print('是字符串')
-            res_param = resData.get(check_point)
-            test_param = testData.get(check_point)
-        else:
-            res_param = 'res_param参数异常：  check_point传值错误  当前类型为  ' + param_type
-            test_param = 'test_param参数异常：  check_point传值错误  当前类型为  ' + param_type
-            # print('异常')
+                #例：check_point_list = ["result.data.list.-1.name2","result.data.list.0.name1"]
+                paramsPathStr = checkPoint
+                paramsPath = paramsPathStr.split(".")
+                check_result = response
+                test_result = testResp
+                for params in paramsPath:
+                    if params.lstrip("-").isdigit():
+                        params = int(params)
+                    check_result = check_result[params]
+                    test_result = test_result[params]
+                CHECK_POINT('检查点： ' + str(checkPoint) + ':' + str(test_result) + '\n****** 返回的数据  ******： ' + str(check_result),
+                            check_result == test_result)
 
-        #检查最终的res_param == test_param
-        CHECK_POINT('检查点： ' + str(check_point) + '返回的数据： ' + str(res_param), res_param == test_param)
+
+    # def check_data(self,testId,isCheckSucces=True,headers=Global.Headers_yun):
+    #     '''
+    #     校验response和testParams中的data部分数据是否相等
+    #     :param testId:
+    #     :param isCheckSucces:默认校验接口的success == True ,传False则校验success == False
+    #     :param headers:
+    #     :return:
+    #     '''
+    #     paramdict = apiCommon().get_response(testId,headers)
+    #     response = paramdict.get('response')
+    #     testResp = paramdict.get('testResp')
+    #     check_point_list = paramdict.get('check_point_list')
+    #     #先校验下succsess
+    #     self.check_common(response, isCheckSucces)
+    #     if check_point_list == '':
+    #         #校验整个response与testResp相等
+    #         CHECK_POINT('检查点： ' + str(testResp) + '\n****** 返回的数据  ******： ' + str(response), response == testResp)
+    #     else:
+    #         #校验整个response与testResp内的Data部分内容
+    #         resData = response.get('data')
+    #         testData = testResp.get('data')
+    #         check_point_list = eval(check_point_list)
+    #         for check_point in check_point_list:
+    #             # check_point = {
+    #             #     'first_param__name': 'list',
+    #             #     'second_param__name': 0,
+    #             #     'third_param__name': 'name'
+    #             # }
+    #             apiCommon().check_branch(resData, testData, check_point=check_point)
+    #
+    # def check_branch(self,resData,testData,check_point=None):
+    #     '''
+    #     根据check_point中的值，判断是校验整个data数据，还是校验data下的一级字段，还是校验data下的二级字段
+    #     :param resData: respoonse中的整个data数据
+    #     :param testData: testResp中的整个data数据
+    #     :param check_point: 可传入srt， dict，srt 则校验resData和testData中的一级字段，dict  则校验resData和testData中的二级或三级字段
+    #     :return:
+    #     '''
+    #     param_type = type(check_point)
+    #     if param_type == dict:
+    #
+    #         # print('是字典')
+    #         first_param__name = check_point.get('first_param__name')
+    #         second_param__name = check_point.get('second_param__name')
+    #         if type(second_param__name) == str:
+    #             '''
+    #                 实例：
+    #                 数据库存的check_point = [{'first_param__name': 'fileDetail','second_param__name': 'uploadFileName'},{'first_param__name': 'list','second_param__name': 'FileUrl'}]，分别取出的值均为dict,但只有二级字段
+    #                 会分别校验resData和testData中data['fileDetail']['uploadFileName']字段和data['fileDetail']['FileUrl']的值是否相等
+    #             '''
+    #             res_param = resData.get(first_param__name).get(second_param__name)
+    #             test_param = testData.get(first_param__name).get(second_param__name)
+    #         elif type(second_param__name) == int:
+    #             '''
+    #                 实例：
+    #                 数据库存的check_point = [{'first_param__name': 'list','second_param__name': 0,'third_param__name': 'uploadFileName'},{'first_param__name': 'list','second_param__name': 0,'third_param__name': 'FileUrl'}]，分别取出的值均为dict，且有三级字段
+    #                 会分别校验resData和testData中data['list'][0]['uploadFileName']字段和data['list'][0]['FileUrl']的值是否相等
+    #             '''
+    #             third_param__name = check_point.get('third_param__name')
+    #             res_param = resData.get(first_param__name)[second_param__name].get(third_param__name)
+    #             test_param = testData.get(first_param__name)[second_param__name].get(third_param__name)
+    #         else:
+    #             res_param = 'res_param参数异常：  second_param__name传值错误  当前类型为  ' + type(second_param__name)
+    #             test_param = 'test_param参数异常：  second_param__name传值错误  当前类型为  ' + type(second_param__name)
+    #     elif param_type == str:
+    #         '''
+    #             实例：
+    #             数据库存的check_point = ['errorInfo','failNum','importSuccess','successNum']，分别取出的值均为str
+    #             会分别校验resData和testData中errorInfo，failNum...等字段的值是否相等
+    #         '''
+    #         # print('是字符串')
+    #         res_param = resData.get(check_point)
+    #         test_param = testData.get(check_point)
+    #     else:
+    #         res_param = 'res_param参数异常：  check_point传值错误  当前类型为  ' + param_type
+    #         test_param = 'test_param参数异常：  check_point传值错误  当前类型为  ' + param_type
+    #         # print('异常')
+    #
+    #     #检查最终的res_param == test_param
+    #     CHECK_POINT('检查点： ' + str(check_point) + '返回的数据： ' + str(res_param), res_param == test_param)
 
 if __name__ == "__main__":
     check_point = {
