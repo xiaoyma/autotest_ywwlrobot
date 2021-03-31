@@ -39,12 +39,12 @@ class  a1204:
         testId = 'API-1204-01'
         apiCommon().check_data(testId)
 
-class  a1205:
-    name = '查询采销-post接口 - API-1205'
-    def teststeps(self):
-        STEP(1,'查询采销-post接口')
-        testId = 'API-1205-01'
-        apiCommon().check_data(testId)
+# class  a1205:
+#     name = '查询采销-post接口 - API-1205'
+#     def teststeps(self):
+#         STEP(1,'查询采销-post接口')
+#         testId = 'API-1205-01'
+#         apiCommon().check_data(testId)
 
 class  a1206:
     name = '添加供应商采销 - API-1206'
