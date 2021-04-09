@@ -99,7 +99,7 @@ class a3111:
     name = '合同评论 - API-3111'
     def teststeps(self):
         STEP(1, '合同评论')
-        testId = 'API-3102-01'
+        testId = 'API-3111-01'
         apiCommon().check_data(testId=testId,headers=headers)
 
 class a3112:
@@ -207,4 +207,4 @@ class a3123:
         apiCommon().check_data(testId=testId,headers=headers)
 
 if __name__ == "__main__":
-    a3116().teststeps()
+    a3111().teststeps()

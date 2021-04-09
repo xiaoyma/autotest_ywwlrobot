@@ -113,7 +113,7 @@ class SendEmail(object):
         mail_user = 'maxiao@ywwl.com'
         mail_pass = "AWbnBmhL2UN8TUpv"  # 用户名对应的密码，若开启了安全登录，这里需要填客户端专用密码
         sender = "maxiao@ywwl.com"  # 发件人
-        receivers = ['gylxmz@ywwl.com', 'sunqin@ywwl.com', 'xiyao@ywwl.com']  # 收件人
+        receivers = ['chanpin@ywwl.com', 'jishu@ywwl.com', 'ceshi@ywwl.com']  # 收件人
         # receivers = ['maxiao@ywwl.com']  # 收件人
         mail_postfix = "qq.com"
         today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
